@@ -8,9 +8,13 @@ const Home = () => {
   return (
     <div>
       <h1 className='mb-4'>All tables</h1>
-      <ul>
+      <ul className='ps-0'>
         {tables.map((table) => (
-          <TableCard tableId={table.id} tableStatus={table.status} />
+          <TableCard
+            key={table.id}
+            tableId={table.id}
+            tableStatus={table.status}
+          />
         ))}
       </ul>
     </div>
