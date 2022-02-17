@@ -1,4 +1,5 @@
 import { Button, Col, Row } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 const TableCard = ({ tableId, tableStatus }) => {
   return (
@@ -12,7 +13,9 @@ const TableCard = ({ tableId, tableStatus }) => {
           </p>
         </Col>
         <Col className='d-flex justify-content-end'>
-          <Button variant='primary'>Show more</Button>
+          <NavLink to={`/tables/${tableId}`}>
+            <Button variant='primary'>Show more</Button>
+          </NavLink>
         </Col>
       </Row>
       <hr />

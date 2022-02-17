@@ -19,7 +19,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/table:id' element={<TableDetails />} />
+        <Route path='/tables/:tableId' element={<TableDetails />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

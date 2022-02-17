@@ -1,5 +1,7 @@
 //selectors
 export const getAllTables = (state) => state.tables;
+export const getTableParams = ({ tables }, tableId) =>
+  tables.find((table) => table.id === parseInt(tableId));
 // actions
 const createActionName = (actionName) => `app/tables/${actionName}`;
 const UPDATE_TABLES = createActionName('UPDATE_TABLES');
