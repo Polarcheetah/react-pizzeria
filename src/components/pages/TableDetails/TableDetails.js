@@ -1,33 +1,91 @@
-import { useState } from 'react';
-import { Form } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getTableParams } from '../../../redux/tablesRedux';
+import { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, useParams } from 'react-router-dom';
+import {
+  fetchTables,
+  getTableParams,
+  modifyTablesRequest,
+} from '../../../redux/tablesRedux';
 import DoubleInput from '../../common/DoubleInput/DoubleInput';
 import Select from '../../common/Select/Select';
+import SingleInput from '../../common/SingleInput/SingleInput';
 
 const TableDetails = () => {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(fetchTables()), [dispatch]);
   const { tableId } = useParams();
   const tableParams = useSelector(({ tables }) =>
     getTableParams({ tables }, tableId)
   );
 
-  const [status, setStatus] = useState(`${tableParams.status}`);
-  const [peopleAmount, setPeopleAmount] = useState(
-    `${tableParams.peopleAmount}`
-  );
-  const [maxPeopleAmount, setMaxPeopleAmount] = useState(
-    `${tableParams.maxPeopleAmount}`
-  );
-  const [bill, setBill] = useState(`${tableParams.bill}`);
+  const { error, loading } = useSelector(({ tables }) => tables.status);
+  console.log('tableParams', tableParams);
+
+  const [status, setStatus] = useState('');
+
+  const [peopleAmount, setPeopleAmount] = useState('');
+  const [maxPeopleAmount, setMaxPeopleAmount] = useState('');
+  const [bill, setBill] = useState('');
+  const [peopleAmountInputDisabled, setPeopleAmountInputDisabled] =
+    useState(false);
+
+  useEffect(() => {
+    if (tableParams) {
+      setStatus(tableParams.status);
+      setPeopleAmount(tableParams.peopleAmount);
+      setMaxPeopleAmount(tableParams.maxPeopleAmount);
+      setBill(tableParams.bill);
+    }
+  }, [tableParams]);
+
+  useEffect(() => {
+    if (status === 'Cleaning' || status === 'Free') {
+      setPeopleAmount(0);
+      setPeopleAmountInputDisabled(true);
+    } else {
+      setPeopleAmountInputDisabled(false);
+    }
+  }, [status]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newTableParams = {
+      id: tableId,
+      status: status,
+      peopleAmount: peopleAmount,
+      maxPeopleAmount: maxPeopleAmount,
+      bill: bill,
+    };
+    console.log('newTableParams', newTableParams);
+    dispatch(modifyTablesRequest(newTableParams));
+    //return <Navigate to='/' />;
+  };
 
   return (
     <div>
       <h1 className='mb-4'>Table {tableId}</h1>
-      <Form>
-        <Select state={status} setState={setStatus} />
-        <DoubleInput />
-      </Form>
+      {loading && <p>Loading...</p>}
+      {!loading && !error && tableParams?.status && (
+        <Form>
+          <Select status={tableParams.status} setStatus={setStatus} />
+          <DoubleInput
+            peopleAmount={peopleAmount}
+            setPeopleAmount={setPeopleAmount}
+            maxPeopleAmount={maxPeopleAmount}
+            setMaxPeopleAmount={setMaxPeopleAmount}
+            status={status}
+            inputDisabled={peopleAmountInputDisabled}
+          />
+          {status === 'Busy' && (
+            <SingleInput bill={bill} setBill={setBill} status={status} />
+          )}
+          <Button onClick={handleSubmit} type='submit' className='mt-4'>
+            Update
+          </Button>
+        </Form>
+      )}
     </div>
   );
 };

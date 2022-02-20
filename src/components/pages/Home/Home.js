@@ -1,10 +1,12 @@
-import { useSelector } from 'react-redux';
-import { getAllTables } from '../../../redux/tablesRedux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTables, getAllTables } from '../../../redux/tablesRedux';
 import TableCard from '../../features/TableCard/TableCard';
 
 const Home = () => {
   const tables = useSelector(getAllTables);
-
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(fetchTables()), [dispatch]);
   return (
     <div>
       <h1 className='mb-4'>All tables</h1>
