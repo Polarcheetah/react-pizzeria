@@ -60,7 +60,6 @@ const TableDetails = () => {
       maxPeopleAmount: maxPeopleAmount,
       bill: bill,
     };
-    console.log('newTableParams', newTableParams);
     dispatch(modifyTablesRequest(newTableParams));
   };
 

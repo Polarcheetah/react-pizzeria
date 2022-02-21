@@ -77,7 +77,7 @@ const tablesReducer = (statePart = initialTableState, action) => {
         status: { error: action.payload, loading: false },
       };
     case UPDATE_SINGLE_TABLE:
-      return [...statePart, { ...action.payload }];
+      return [...statePart, action.payload];
     default:
       return statePart;
   }
