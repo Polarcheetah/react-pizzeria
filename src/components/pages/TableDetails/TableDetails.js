@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   fetchTables,
   getTableParams,
@@ -20,7 +20,6 @@ const TableDetails = () => {
   );
 
   const { error, loading } = useSelector(({ tables }) => tables.status);
-  console.log('tableParams', tableParams);
 
   const [status, setStatus] = useState('');
 
@@ -46,6 +45,9 @@ const TableDetails = () => {
     } else {
       setPeopleAmountInputDisabled(false);
     }
+    if (status !== 'Busy') {
+      setBill(0);
+    }
   }, [status]);
 
   const handleSubmit = (e) => {
@@ -60,7 +62,6 @@ const TableDetails = () => {
     };
     console.log('newTableParams', newTableParams);
     dispatch(modifyTablesRequest(newTableParams));
-    //return <Navigate to='/' />;
   };
 
   return (
@@ -69,13 +70,12 @@ const TableDetails = () => {
       {loading && <p>Loading...</p>}
       {!loading && !error && tableParams?.status && (
         <Form>
-          <Select status={tableParams.status} setStatus={setStatus} />
+          <Select status={tableParams?.status} setStatus={setStatus} />
           <DoubleInput
             peopleAmount={peopleAmount}
             setPeopleAmount={setPeopleAmount}
             maxPeopleAmount={maxPeopleAmount}
             setMaxPeopleAmount={setMaxPeopleAmount}
-            status={status}
             inputDisabled={peopleAmountInputDisabled}
           />
           {status === 'Busy' && (

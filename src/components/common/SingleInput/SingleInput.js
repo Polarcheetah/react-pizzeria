@@ -1,5 +1,6 @@
 import styles from './SingleInput.module.scss';
 import { Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const SingleInput = ({ bill, setBill }) => {
   return (
@@ -15,6 +16,14 @@ const SingleInput = ({ bill, setBill }) => {
       />
     </Form.Group>
   );
+};
+
+SingleInput.propTypes = {
+  bill: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
+  setBill: PropTypes.func.isRequired,
 };
 
 export default SingleInput;

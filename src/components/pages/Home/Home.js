@@ -7,6 +7,7 @@ const Home = () => {
   const tables = useSelector(getAllTables);
   const dispatch = useDispatch();
   useEffect(() => dispatch(fetchTables()), [dispatch]);
+
   return (
     <div>
       <h1 className='mb-4'>All tables</h1>

@@ -1,12 +1,12 @@
 import { Form } from 'react-bootstrap';
 import styles from './DoubleInput.module.scss';
+import PropTypes from 'prop-types';
 
 const DoubleInput = ({
   peopleAmount,
   setPeopleAmount,
   maxPeopleAmount,
   setMaxPeopleAmount,
-  status,
   inputDisabled,
 }) => {
   const validateInput1 = (value) => {
@@ -55,6 +55,20 @@ const DoubleInput = ({
       />
     </Form.Group>
   );
+};
+
+DoubleInput.propTypes = {
+  peopleAmount: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
+  setPeopleAmount: PropTypes.func.isRequired,
+  maxPeopleAmount: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
+  setMaxPeopleAmount: PropTypes.func.isRequired,
+  inputDisabled: PropTypes.bool.isRequired,
 };
 
 export default DoubleInput;

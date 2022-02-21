@@ -1,3 +1,5 @@
+import { API_URL } from '../config.js';
+
 //selectors
 export const getAllTables = (state) => state.tables.data;
 export const getTableParams = (state, tableId) =>
@@ -23,7 +25,7 @@ export const fetchError = (payload) => ({ type: FETCH_ERROR, payload });
 export const fetchTables = () => {
   return (dispatch) => {
     dispatch(fetchStart());
-    fetch('http://localhost:3131/api/tables')
+    fetch(`${API_URL}/tables`)
       .then((res) => res.json())
       .then((tables) => dispatch(updateTables(tables)))
       .catch((error) => {
@@ -42,7 +44,7 @@ export const modifyTablesRequest = (newTableParams) => {
       body: JSON.stringify(newTableParams),
     };
 
-    const url = `http://localhost:3131/api/tables/${newTableParams.id}`;
+    const url = `${API_URL}/tables/${newTableParams.id}`;
 
     fetch(url, options).then(() => dispatch(updateSingleTable(newTableParams)));
   };
